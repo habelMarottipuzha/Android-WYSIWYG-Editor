@@ -25,6 +25,15 @@ public class HTMLExtensions {
         this.editorCore = editorCore;
     }
 
+    private static boolean matchesTag(String test) {
+        for (HtmlTag tag : HtmlTag.values()) {
+            if (tag.name().equals(test)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void parseHtml(String htmlString) {
         Document doc = Jsoup.parse(htmlString);
         for (Element element : doc.body().children()) {
@@ -59,9 +68,6 @@ public class HTMLExtensions {
             case ol:
                 RenderList(tag == HtmlTag.ol, element);
                 break;
-            case img:
-                RenderImage(element);
-                break;
             case div:
                 renderDiv(element);
         }
@@ -69,18 +75,6 @@ public class HTMLExtensions {
 
     private void renderDiv(Element element) {
         String tag = element.attr("data-tag");
-        if (tag.equals("img")) {
-            RenderImage(element);
-        }
-    }
-
-    private void RenderImage(Element element) {
-        Element img = element.child(0);
-        Element descTag = element.child(1);
-        String src = img.attr("src");
-        String desc = descTag.html();
-        int Index = editorCore.getParentChildCount();
-        editorCore.getImageExtensions().executeDownloadImageTask(src, Index, desc);
     }
 
     private void RenderList(boolean isOrdered, Element element) {
@@ -112,16 +106,6 @@ public class HTMLExtensions {
 
     private boolean hasChildren(Element element) {
         return element.getAllElements().size() > 0;
-    }
-
-
-    private static boolean matchesTag(String test) {
-        for (HtmlTag tag : HtmlTag.values()) {
-            if (tag.name().equals(test)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private String getTemplateHtml(EditorType child) {
@@ -229,9 +213,6 @@ public class HTMLExtensions {
                     break;
                 case hr:
                     htmlBlock.append(getTemplateHtml(item.type));
-                    break;
-                case map:
-                    htmlBlock.append(getTemplateHtml(item.type).replace("{{$content}}", editorCore.getMapExtensions().getCordsAsUri(item.content.get(0))).replace("{{$desc}}", item.content.get(1)));
                     break;
                 case ul:
                 case ol:

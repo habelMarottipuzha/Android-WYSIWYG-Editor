@@ -29,6 +29,15 @@ import java.util.Map;
 public class EditorTestActivity extends AppCompatActivity {
     Editor editor;
 
+    public static void setGhost(Button button) {
+        int radius = 4;
+        GradientDrawable background = new GradientDrawable();
+        background.setShape(GradientDrawable.RECTANGLE);
+        background.setStroke(4, Color.WHITE);
+        background.setCornerRadius(radius);
+        button.setBackgroundDrawable(background);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,13 +117,6 @@ public class EditorTestActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.openImagePicker();
-            }
-        });
-
         findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,12 +124,6 @@ public class EditorTestActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_map).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.insertMap();
-            }
-        });
 
         findViewById(R.id.action_erase).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +138,6 @@ public class EditorTestActivity extends AppCompatActivity {
         editor.setHeadingTypeface(headingTypeface);
         editor.setContentTypeface(contentTypeface);
         editor.setDividerLayout(R.layout.tmpl_divider_layout);
-        editor.setEditorImageLayout(R.layout.tmpl_image_view);
         editor.setListItemLayout(R.layout.tmpl_list_item);
         //editor.StartEditor();
         editor.setEditorListener(new EditorListener() {
@@ -153,9 +148,6 @@ public class EditorTestActivity extends AppCompatActivity {
 
             @Override
             public void onUpload(Bitmap image, String uuid) {
-                Toast.makeText(EditorTestActivity.this, uuid, Toast.LENGTH_LONG).show();
-                editor.onImageUploadComplete("http://www.videogamesblogger.com/wp-content/uploads/2015/08/metal-gear-solid-5-the-phantom-pain-cheats-640x325.jpg", uuid);
-                // editor.onImageUploadFailed(uuid);
             }
         });
         editor.render();  // this method must be called to start the editor
@@ -171,15 +163,6 @@ public class EditorTestActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    public static void setGhost(Button button) {
-        int radius = 4;
-        GradientDrawable background = new GradientDrawable();
-        background.setShape(GradientDrawable.RECTANGLE);
-        background.setStroke(4, Color.WHITE);
-        background.setCornerRadius(radius);
-        button.setBackgroundDrawable(background);
     }
 
     private void render() {
@@ -219,7 +202,7 @@ public class EditorTestActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 // Log.d(TAG, String.valueOf(bitmap));
-                editor.insertImage(bitmap);
+                // editor.insertImage(bitmap);
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -229,7 +212,7 @@ public class EditorTestActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             // editor.RestoreState();
         } else if (requestCode == editor.MAP_MARKER_REQUEST) {
-            editor.insertMap(data.getStringExtra("cords"));
+            // editor.insertMap(data.getStringExtra("cords"));
         }
     }
 

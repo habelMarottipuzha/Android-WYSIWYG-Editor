@@ -23,10 +23,8 @@ import android.widget.Toast;
 import com.github.irshulx.Components.CustomEditText;
 import com.github.irshulx.Components.DividerExtensions;
 import com.github.irshulx.Components.HTMLExtensions;
-import com.github.irshulx.Components.ImageExtensions;
 import com.github.irshulx.Components.InputExtensions;
 import com.github.irshulx.Components.ListItemExtensions;
-import com.github.irshulx.Components.MapExtensions;
 import com.github.irshulx.models.EditorContent;
 import com.github.irshulx.models.EditorControl;
 import com.github.irshulx.models.EditorTextStyle;
@@ -43,31 +41,29 @@ import java.util.List;
  * Created by mkallingal on 4/30/2016.
  */
 public class EditorCore extends LinearLayout {
-    /*
-    * EditText initializors
-    */
-    public String placeHolder = null;
+    public final int MAP_MARKER_REQUEST = 20;
+    public final int PICK_IMAGE_REQUEST = 1;
     /*
     * Divider initializors
     */
     private final String SHAREDPREFERENCE = "QA";
+    /*
+    * EditText initializors
+    */
+    public String placeHolder = null;
+    protected LinearLayout __parentView;
     private Context __context;
     private Activity __activity;
-    protected LinearLayout __parentView;
     private RenderType __renderType;
     private Resources __resources;
     private View __activeView;
     private Gson __gson;
     private Utilities __utilities;
     private EditorListener __listener;
-    public final int MAP_MARKER_REQUEST = 20;
-    public final int PICK_IMAGE_REQUEST = 1;
     private InputExtensions __inputExtensions;
-    private ImageExtensions __imageExtensions;
     private ListItemExtensions __listItemExtensions;
     private DividerExtensions __dividerExtensions;
     private HTMLExtensions __htmlExtensions;
-    private MapExtensions __mapExtensions;
 
     public EditorCore(Context _context, AttributeSet attrs) {
         super(_context, attrs);
@@ -83,10 +79,8 @@ public class EditorCore extends LinearLayout {
         this.__resources = context.getResources();
         __gson = new Gson();
         __inputExtensions = new InputExtensions(this);
-        __imageExtensions = new ImageExtensions(this);
         __listItemExtensions = new ListItemExtensions(this);
         __dividerExtensions = new DividerExtensions(this);
-        __mapExtensions = new MapExtensions(this);
         __htmlExtensions = new HTMLExtensions(this);
         this.__parentView = this;
     }
@@ -176,14 +170,6 @@ public class EditorCore extends LinearLayout {
      */
     public InputExtensions getInputExtensions() {
         return this.__inputExtensions;
-    }
-
-    public ImageExtensions getImageExtensions() {
-        return this.__imageExtensions;
-    }
-
-    public MapExtensions getMapExtensions() {
-        return this.__mapExtensions;
     }
 
     public HTMLExtensions getHtmlExtensions() {
@@ -503,11 +489,6 @@ public class EditorCore extends LinearLayout {
                 case hr:
                     __dividerExtensions.insertDivider();
                     break;
-                case img:
-                    String path = item.content.get(0);
-                    String desc = item.content.get(1);
-                    __imageExtensions.loadImage(path, desc);
-                    break;
                 case ul:
                 case ol:
                     TableLayout _layout = null;
@@ -518,9 +499,6 @@ public class EditorCore extends LinearLayout {
                             __listItemExtensions.AddListItem(_layout, item.type == EditorType.ol, item.content.get(i));
                         }
                     }
-                    break;
-                case map:
-                    __mapExtensions.insertMap(item.content.get(0), item.content.get(1), true);
                     break;
             }
         }

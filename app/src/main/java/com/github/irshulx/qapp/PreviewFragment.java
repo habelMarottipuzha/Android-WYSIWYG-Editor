@@ -50,7 +50,6 @@ public class PreviewFragment extends Fragment {
         renderer.setHeadingTypeface(headingTypeface);
         renderer.setContentTypeface(contentTypeface);
         renderer.setDividerLayout(R.layout.tmpl_divider_layout);
-        renderer.setEditorImageLayout(R.layout.tmpl_image_view);
         renderer.setListItemLayout(R.layout.tmpl_list_item);
         String content= mSerialized;
         EditorContent Deserialized= renderer.getContentDeserialized(content);
@@ -61,11 +60,6 @@ public class PreviewFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     public Map<Integer,String> getHeadingTypeface() {
@@ -84,5 +78,10 @@ public class PreviewFragment extends Fragment {
         typefaceMap.put(Typeface.ITALIC,"fonts/Lato-MediumItalic.ttf");
         typefaceMap.put(Typeface.BOLD_ITALIC,"fonts/Lato-BoldItalic.ttf");
         return typefaceMap;
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }

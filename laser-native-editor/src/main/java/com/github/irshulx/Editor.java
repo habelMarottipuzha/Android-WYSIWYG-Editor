@@ -16,14 +16,13 @@
 package com.github.irshulx;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.github.irshulx.Components.CustomEditText;
-import com.github.irshulx.models.EditorTextStyle;
 import com.github.irshulx.models.EditorContent;
+import com.github.irshulx.models.EditorTextStyle;
 import com.github.irshulx.models.RenderType;
 
 import java.util.Map;
@@ -175,6 +174,9 @@ public class Editor extends EditorCore {
         getInputExtensions().insertLink(link);
     }
 
+    public Map<Integer, String> getContentTypeface() {
+        return getInputExtensions().getContentTypeface();
+    }
 
     /**
      * setup the fontfaces for editor content
@@ -192,8 +194,8 @@ public class Editor extends EditorCore {
         getInputExtensions().setContentTypeface(map);
     }
 
-    public Map<Integer, String> getContentTypeface() {
-        return getInputExtensions().getContentTypeface();
+    public Map<Integer, String> getHeadingTypeface() {
+        return getInputExtensions().getHeadingTypeface();
     }
 
     /**
@@ -211,10 +213,6 @@ public class Editor extends EditorCore {
         getInputExtensions().setHeadingTypeface(map);
     }
 
-    public Map<Integer, String> getHeadingTypeface() {
-        return getInputExtensions().getHeadingTypeface();
-    }
-
 
         /*
          *
@@ -230,31 +228,6 @@ public class Editor extends EditorCore {
         getDividerExtensions().insertDivider();
     }
 
-        /*
-         *
-         * Image Extension
-         *
-         */
-
-    public void setEditorImageLayout(int layout) {
-        this.getImageExtensions().setEditorImageLayout(layout);
-    }
-
-    public void openImagePicker() {
-        getImageExtensions().openImageGallery();
-    }
-
-    public void insertImage(Bitmap bitmap) {
-        getImageExtensions().insertImage(bitmap, -1,null);
-    }
-
-    public void onImageUploadComplete(String url, String imageId) {
-        getImageExtensions().onPostUpload(url, imageId);
-    }
-
-    public void onImageUploadFailed(String imageId) {
-        getImageExtensions().onPostUpload(null, imageId);
-    }
     /*
      *
      *List Item extension
@@ -274,18 +247,6 @@ public class Editor extends EditorCore {
          * Map Extension
          *
          */
-
-    public void setMapViewLayout(int layout) {
-        this.getMapExtensions().setMapViewTemplate(layout);
-    }
-
-    public void insertMap() {
-        getMapExtensions().loadMapActivity();
-    }
-
-    public void insertMap(String Cords) {
-        getMapExtensions().insertMap(Cords, null, true);
-    }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event, CustomEditText editText) {
